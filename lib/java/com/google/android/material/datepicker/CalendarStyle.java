@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
@@ -71,7 +72,7 @@ final class CalendarStyle {
    */
   @NonNull final Paint rangeFill;
 
-  CalendarStyle(@NonNull Context context) {
+  CalendarStyle(@NonNull Context context, @ColorInt int selectedColor) {
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
@@ -80,34 +81,34 @@ final class CalendarStyle {
 
     day =
         CalendarItemStyle.create(
-            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0));
+            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0), 0);
     invalidDay =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayInvalidStyle, 0));
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayInvalidStyle, 0), 0);
     selectedDay =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0));
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0), selectedColor);
     todayDay =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0));
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0), 0);
     ColorStateList rangeFillColorList =
         MaterialResources.getColorStateList(
             context, calendarAttributes, R.styleable.MaterialCalendar_rangeFillColor);
 
     year =
         CalendarItemStyle.create(
-            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearStyle, 0));
+            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearStyle, 0), 0);
     selectedYear =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearSelectedStyle, 0));
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearSelectedStyle, 0), selectedColor);
     todayYear =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearTodayStyle, 0));
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearTodayStyle, 0), 0);
 
     rangeFill = new Paint();
     rangeFill.setColor(rangeFillColorList.getDefaultColor());

@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -131,7 +132,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
-    calendarStyle = new CalendarStyle(themedContext);
+    calendarStyle = new CalendarStyle(themedContext, dateSelector.getAccentColor());
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
     Month earliestMonth = calendarConstraints.getStart();
@@ -444,6 +445,13 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             }
           }
         });
+
+    if (dateSelector.getAccentColor() != 0) {
+      monthDropSelect.setTextColor(dateSelector.getAccentColor());
+      monthDropSelect.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+      monthPrev.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+      monthNext.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+    }
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {

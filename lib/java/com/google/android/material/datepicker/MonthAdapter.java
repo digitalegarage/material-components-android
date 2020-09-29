@@ -186,7 +186,7 @@ class MonthAdapter extends BaseAdapter {
 
   private void initializeStyles(Context context) {
     if (calendarStyle == null) {
-      calendarStyle = new CalendarStyle(context);
+      calendarStyle = new CalendarStyle(context, dateSelector.getAccentColor());
     }
   }
 
