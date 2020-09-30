@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.LocaleList;
+import androidx.annotation.ColorInt;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import android.text.Editable;
@@ -84,6 +85,10 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
       final LocaleList locales = configuration.getLocales();
       editText.setImeHintLocales(locales);
     }
+  }
+
+  public void setAccentColor(@ColorInt int color) {
+    textInputLayout.setBoxStrokeColor(color);
   }
 
   @Override

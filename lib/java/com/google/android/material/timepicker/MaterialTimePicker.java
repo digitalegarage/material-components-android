@@ -25,6 +25,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import androidx.annotation.ColorInt;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -87,12 +88,14 @@ public final class MaterialTimePicker extends DialogFragment {
   static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
   static final String TITLE_RES_EXTRA = "TIME_PICKER_TITLE_RES";
   static final String TITLE_TEXT_EXTRA = "TIME_PICKER_TITLE_TEXT";
+  private static final String ACCENT_COLOR_KEY = "ACCENT_COLOR_KEY";
 
   private MaterialButton modeButton;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
   private TimeModel time;
+  private int accentColor;
 
   @NonNull
   private static MaterialTimePicker newInstance(@NonNull Builder options) {
@@ -104,7 +107,7 @@ public final class MaterialTimePicker extends DialogFragment {
     if (options.titleText != null) {
       args.putString(TITLE_TEXT_EXTRA, options.titleText.toString());
     }
-
+    args.putInt(ACCENT_COLOR_KEY, options.accentColor);
     fragment.setArguments(args);
     return fragment;
   }
@@ -162,6 +165,7 @@ public final class MaterialTimePicker extends DialogFragment {
     bundle.putInt(INPUT_MODE_EXTRA, inputMode);
     bundle.putInt(TITLE_RES_EXTRA, titleResId);
     bundle.putString(TITLE_TEXT_EXTRA, titleText);
+    bundle.putInt(ACCENT_COLOR_KEY, accentColor);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -176,6 +180,7 @@ public final class MaterialTimePicker extends DialogFragment {
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
     titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
     titleText = bundle.getString(TITLE_TEXT_EXTRA);
+    accentColor = bundle.getInt(ACCENT_COLOR_KEY);
   }
 
   @NonNull
@@ -233,6 +238,11 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
+    if (accentColor != 0) {
+      timePickerView.setAccentColor(accentColor);
+      okButton.setTextColor(accentColor);
+      cancelButton.setTextColor(accentColor);
+    }
     return root;
   }
 
@@ -404,6 +414,7 @@ public final class MaterialTimePicker extends DialogFragment {
     private int inputMode;
     private int titleTextResId = 0;
     private CharSequence titleText;
+    private int accentColor = 0;
 
     /** Sets the input mode with which to start the time picker. */
     @NonNull
@@ -462,6 +473,13 @@ public final class MaterialTimePicker extends DialogFragment {
     @NonNull
     public Builder setTitleText(@Nullable CharSequence charSequence) {
       this.titleText = charSequence;
+      return this;
+    }
+
+    @NonNull
+    public Builder setAccentColor(@ColorInt int color) {
+      this.accentColor = color;
+      time.setAccentColor(color);
       return this;
     }
 
