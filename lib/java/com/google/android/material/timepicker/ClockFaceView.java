@@ -208,7 +208,7 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   public void setAccentColor(@ColorInt int color) {
     clockHandView.setAccentColor(color);
     int selectedTextColor = ColorLuminance.isDark(color) ? Color.WHITE : Color.BLACK;
-    int colorOnSurface = gradientColors[2];
+    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
     gradientColors = new int[] {selectedTextColor, selectedTextColor, colorOnSurface};
   }
 
