@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -32,6 +33,8 @@ import androidx.core.view.ViewCompat;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
+
+import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -142,12 +145,14 @@ final class CalendarItemStyle {
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
     if (selectedColor != 0) {
+      int textColor = ColorLuminance.isDark(selectedColor) ? Color.WHITE : Color.BLACK;
+      item.setTextColor(textColor);
       backgroundDrawable.setFillColor(ColorStateList.valueOf(selectedColor));
     } else {
+      item.setTextColor(textColor);
       backgroundDrawable.setFillColor(backgroundColor);
     }
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
-    item.setTextColor(textColor);
     Drawable d;
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);

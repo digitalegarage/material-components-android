@@ -26,10 +26,12 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.ColorInt;
 import androidx.fragment.app.DialogFragment;
@@ -51,6 +53,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+
+import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
@@ -247,7 +251,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
     confirmButton.setOnClickListener(
-        new View.OnClickListener() {
+        new OnClickListener() {
           @Override
           public void onClick(View v) {
             for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
@@ -261,10 +265,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
     cancelButton.setOnClickListener(
-        new View.OnClickListener() {
+        new OnClickListener() {
           @Override
           public void onClick(View v) {
-            for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+            for (OnClickListener listener : onNegativeButtonClickListeners) {
               listener.onClick(v);
             }
             dismiss();
@@ -275,6 +279,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       root.findViewById(R.id.mtrl_picker_header).setBackgroundColor(accentColor);
       confirmButton.setTextColor(accentColor);
       cancelButton.setTextColor(accentColor);
+      int textColor = ColorLuminance.isDark(accentColor) ? Color.WHITE : Color.BLACK;
+      titleTextView.setTextColor(textColor);
+      headerSelectionText.setTextColor(textColor);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        headerToggleButton.setImageTintList(ColorStateList.valueOf(textColor));
+      }
     }
     return root;
   }
