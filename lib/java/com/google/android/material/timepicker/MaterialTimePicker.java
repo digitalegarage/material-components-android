@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.IntDef;
@@ -46,6 +47,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.AccentColor;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.timepicker.TimePickerView.OnDoubleTapListener;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -193,6 +195,14 @@ public final class MaterialTimePicker extends DialogFragment {
     ViewGroup root =
         (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
     timePickerView = root.findViewById(R.id.material_timepicker_view);
+    timePickerView.setOnDoubleTapListener(
+        new OnDoubleTapListener() {
+          @Override
+          public void onDoubleTap() {
+            inputMode = INPUT_MODE_KEYBOARD;
+            updateInputMode(modeButton);
+          }
+        });
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
@@ -206,7 +216,7 @@ public final class MaterialTimePicker extends DialogFragment {
     }
 
     updateInputMode(modeButton);
-    MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
+    Button okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -218,7 +228,7 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
-    MaterialButton cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
+    Button cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     cancelButton.setOnClickListener(
         new OnClickListener() {
           @Override
