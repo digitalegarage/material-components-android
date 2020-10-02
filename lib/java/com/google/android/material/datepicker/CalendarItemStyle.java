@@ -26,6 +26,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.ColorInt;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.widget.TextView;
@@ -56,11 +57,13 @@ final class CalendarItemStyle {
   private final ColorStateList strokeColor;
   private final int strokeWidth;
   private final ShapeAppearanceModel itemShape;
+  private final int selectedColor;
 
   private CalendarItemStyle(
       ColorStateList backgroundColor,
       ColorStateList textColor,
       ColorStateList strokeColor,
+      @ColorInt int selectedColor,
       int strokeWidth,
       ShapeAppearanceModel itemShape,
       @NonNull Rect insets) {
@@ -73,6 +76,7 @@ final class CalendarItemStyle {
     this.textColor = textColor;
     this.backgroundColor = backgroundColor;
     this.strokeColor = strokeColor;
+    this.selectedColor = selectedColor;
     this.strokeWidth = strokeWidth;
     this.itemShape = itemShape;
   }
@@ -83,7 +87,7 @@ final class CalendarItemStyle {
    */
   @NonNull
   static CalendarItemStyle create(
-      @NonNull Context context, @StyleRes int materialCalendarItemStyle) {
+      @NonNull Context context, @StyleRes int materialCalendarItemStyle, @ColorInt int selectedColor) {
     Preconditions.checkArgument(
         materialCalendarItemStyle != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
 
@@ -128,7 +132,7 @@ final class CalendarItemStyle {
     styleableArray.recycle();
 
     return new CalendarItemStyle(
-        backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
+        backgroundColor, textColor, strokeColor, selectedColor, strokeWidth, itemShape, insets);
   }
 
   /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
@@ -137,7 +141,11 @@ final class CalendarItemStyle {
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    backgroundDrawable.setFillColor(backgroundColor);
+    if (selectedColor != 0) {
+      backgroundDrawable.setFillColor(ColorStateList.valueOf(selectedColor));
+    } else {
+      backgroundDrawable.setFillColor(backgroundColor);
+    }
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColor);
     Drawable d;

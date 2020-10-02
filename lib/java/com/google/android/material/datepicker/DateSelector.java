@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import androidx.annotation.ColorInt;
 import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,4 +102,9 @@ public interface DateSelector<S> extends Parcelable {
       @Nullable Bundle bundle,
       @NonNull CalendarConstraints constraints,
       @NonNull OnSelectionChangedListener<S> listener);
+
+  @ColorInt
+  int getAccentColor();
+
+  void setAccentColor(@ColorInt int color);
 }
