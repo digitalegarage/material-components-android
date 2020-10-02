@@ -23,6 +23,8 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 
@@ -81,11 +83,11 @@ final class CalendarStyle {
 
     day =
         CalendarItemStyle.create(
-            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0), 0);
+            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0), AccentColor.NONE);
     invalidDay =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayInvalidStyle, 0), 0);
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayInvalidStyle, 0), AccentColor.NONE);
     selectedDay =
         CalendarItemStyle.create(
             context,
@@ -93,14 +95,14 @@ final class CalendarStyle {
     todayDay =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0), 0);
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0), AccentColor.NONE);
     ColorStateList rangeFillColorList =
         MaterialResources.getColorStateList(
             context, calendarAttributes, R.styleable.MaterialCalendar_rangeFillColor);
 
     year =
         CalendarItemStyle.create(
-            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearStyle, 0), 0);
+            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearStyle, 0), AccentColor.NONE);
     selectedYear =
         CalendarItemStyle.create(
             context,
@@ -108,7 +110,7 @@ final class CalendarStyle {
     todayYear =
         CalendarItemStyle.create(
             context,
-            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearTodayStyle, 0), 0);
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearTodayStyle, 0), AccentColor.NONE);
 
     rangeFill = new Paint();
     rangeFill.setColor(rangeFillColorList.getDefaultColor());

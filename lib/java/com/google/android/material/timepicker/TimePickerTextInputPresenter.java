@@ -47,6 +47,8 @@ import androidx.core.graphics.ColorUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.color.AccentColor;
+import com.google.android.material.color.ColorStateListCreator;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
@@ -114,7 +116,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
       setupPeriodToggle();
     }
 
-    if (time.getAccentColor() != 0) {
+    if (time.getAccentColor() != AccentColor.NONE) {
       hourTextInput.setAccentColor(time.getAccentColor());
       minuteTextInput.setAccentColor(time.getAccentColor());
     }
@@ -193,7 +195,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
           }
         });
     toggle.setVisibility(View.VISIBLE);
-    if (time.getAccentColor() != 0) {
+    if (time.getAccentColor() != AccentColor.NONE) {
       MaterialButton amButton = toggle.findViewById(R.id.material_clock_period_am_button);
       MaterialButton pmButton = toggle.findViewById(R.id.material_clock_period_pm_button);
       applyStyleForMaterialButton(amButton, time.getAccentColor());

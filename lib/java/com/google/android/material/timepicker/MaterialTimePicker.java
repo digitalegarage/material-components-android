@@ -43,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
@@ -238,7 +239,7 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
-    if (accentColor != 0) {
+    if (accentColor != AccentColor.NONE) {
       timePickerView.setAccentColor(accentColor);
       okButton.setTextColor(accentColor);
       cancelButton.setTextColor(accentColor);
@@ -414,7 +415,7 @@ public final class MaterialTimePicker extends DialogFragment {
     private int inputMode;
     private int titleTextResId = 0;
     private CharSequence titleText;
-    private int accentColor = 0;
+    private int accentColor = AccentColor.NONE;
 
     /** Sets the input mode with which to start the time picker. */
     @NonNull

@@ -1,4 +1,4 @@
-package com.google.android.material.timepicker;
+package com.google.android.material.color;
 
 import android.content.res.ColorStateList;
 

@@ -41,6 +41,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.color.ColorStateListCreator;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 import java.util.Locale;
@@ -207,7 +208,7 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     MaterialButton pmButton = toggle.findViewById(R.id.material_clock_period_pm_button);
     applyStyleForMaterialButton(amButton, color);
     applyStyleForMaterialButton(pmButton, color);
-    this.clockHandView.setAccentColor(color);
+    clockFace.setAccentColor(color);
   }
 
   public void showToggle() {
