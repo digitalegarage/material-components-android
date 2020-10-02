@@ -48,7 +48,7 @@ class TimeModel implements Parcelable {
   @ActiveSelection int selection;
   @ClockPeriod int period;
 
-  private int accentColor = 0;
+  private int accentColor = -1;
 
   public TimeModel() {
     this(CLOCK_12H);

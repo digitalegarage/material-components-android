@@ -51,7 +51,7 @@ public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;
 
-  private int accentColor = 0;
+  private int accentColor = -1;
 
   @Override
   public void select(long selection) {
@@ -117,7 +117,7 @@ public class SingleDateSelector implements DateSelector<Long> {
       dateEditText.setText(format.format(selectedItem));
     }
 
-    if (accentColor != 0) {
+    if (accentColor != -1) {
       dateTextInput.setBoxStrokeColor(accentColor);
       dateTextInput.setHintTextColor(ColorStateList.valueOf(accentColor));
     }

@@ -115,7 +115,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
       setupPeriodToggle();
     }
 
-    if (time.getAccentColor() != 0) {
+    if (time.getAccentColor() != -1) {
       hourTextInput.setAccentColor(time.getAccentColor());
       minuteTextInput.setAccentColor(time.getAccentColor());
     }
@@ -194,7 +194,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
           }
         });
     toggle.setVisibility(View.VISIBLE);
-    if (time.getAccentColor() != 0) {
+    if (time.getAccentColor() != -1) {
       MaterialButton amButton = toggle.findViewById(R.id.material_clock_period_am_button);
       MaterialButton pmButton = toggle.findViewById(R.id.material_clock_period_pm_button);
       applyStyleForMaterialButton(amButton, time.getAccentColor());

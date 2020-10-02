@@ -446,7 +446,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    if (dateSelector.getAccentColor() != 0) {
+    if (dateSelector.getAccentColor() != -1) {
       monthDropSelect.setTextColor(dateSelector.getAccentColor());
       monthDropSelect.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
       monthPrev.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));

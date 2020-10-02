@@ -238,7 +238,7 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
-    if (accentColor != 0) {
+    if (accentColor != -1) {
       timePickerView.setAccentColor(accentColor);
       okButton.setTextColor(accentColor);
       cancelButton.setTextColor(accentColor);
@@ -414,7 +414,7 @@ public final class MaterialTimePicker extends DialogFragment {
     private int inputMode;
     private int titleTextResId = 0;
     private CharSequence titleText;
-    private int accentColor = 0;
+    private int accentColor = -1;
 
     /** Sets the input mode with which to start the time picker. */
     @NonNull

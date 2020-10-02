@@ -275,7 +275,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           }
         });
 
-    if (accentColor != 0) {
+    if (accentColor != -1) {
       root.findViewById(R.id.mtrl_picker_header).setBackgroundColor(accentColor);
       confirmButton.setTextColor(accentColor);
       cancelButton.setTextColor(accentColor);
@@ -555,7 +555,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     CharSequence titleText = null;
     @Nullable S selection = null;
     @InputMode int inputMode = INPUT_MODE_CALENDAR;
-    int accentColor = 0;
+    int accentColor = -1;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -662,7 +662,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       if (calendarConstraints.getOpenAt() == null) {
         calendarConstraints.setOpenAt(createDefaultOpenAt());
       }
-      if (accentColor != 0) {
+      if (accentColor != -1) {
         dateSelector.setAccentColor(accentColor);
       }
 

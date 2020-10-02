@@ -58,7 +58,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @Nullable private Long selectedEndItem = null;
   @Nullable private Long proposedTextStart = null;
   @Nullable private Long proposedTextEnd = null;
-  private int accentColor = 0;
+  private int accentColor = -1;
 
   @Override
   public void select(long selection) {

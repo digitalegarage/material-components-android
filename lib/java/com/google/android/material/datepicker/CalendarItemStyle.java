@@ -144,7 +144,7 @@ final class CalendarItemStyle {
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    if (selectedColor != 0) {
+    if (selectedColor != -1) {
       int textColor = ColorLuminance.isDark(selectedColor) ? Color.WHITE : Color.BLACK;
       item.setTextColor(textColor);
       backgroundDrawable.setFillColor(ColorStateList.valueOf(selectedColor));
