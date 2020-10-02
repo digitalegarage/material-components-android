@@ -34,6 +34,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -144,7 +145,7 @@ final class CalendarItemStyle {
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    if (selectedColor != -1) {
+    if (selectedColor != AccentColor.NONE) {
       int textColor = ColorLuminance.isDark(selectedColor) ? Color.WHITE : Color.BLACK;
       item.setTextColor(textColor);
       backgroundDrawable.setFillColor(ColorStateList.valueOf(selectedColor));

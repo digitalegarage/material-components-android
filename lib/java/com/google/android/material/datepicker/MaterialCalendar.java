@@ -49,6 +49,8 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.AccentColor;
+
 import java.util.Calendar;
 
 /**
@@ -446,7 +448,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    if (dateSelector.getAccentColor() != -1) {
+    if (dateSelector.getAccentColor() != AccentColor.NONE) {
       monthDropSelect.setTextColor(dateSelector.getAccentColor());
       monthDropSelect.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
       monthPrev.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));

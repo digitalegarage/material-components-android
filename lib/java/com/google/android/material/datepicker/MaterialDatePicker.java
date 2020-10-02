@@ -54,6 +54,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
@@ -275,7 +276,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           }
         });
 
-    if (accentColor != -1) {
+    if (accentColor != AccentColor.NONE) {
       root.findViewById(R.id.mtrl_picker_header).setBackgroundColor(accentColor);
       confirmButton.setTextColor(accentColor);
       cancelButton.setTextColor(accentColor);
@@ -555,7 +556,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     CharSequence titleText = null;
     @Nullable S selection = null;
     @InputMode int inputMode = INPUT_MODE_CALENDAR;
-    int accentColor = -1;
+    int accentColor = AccentColor.NONE;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -662,7 +663,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       if (calendarConstraints.getOpenAt() == null) {
         calendarConstraints.setOpenAt(createDefaultOpenAt());
       }
-      if (accentColor != -1) {
+      if (accentColor != AccentColor.NONE) {
         dateSelector.setAccentColor(accentColor);
       }
 
