@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -48,6 +49,8 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.AccentColor;
+
 import java.util.Calendar;
 
 /**
@@ -131,7 +134,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
-    calendarStyle = new CalendarStyle(themedContext);
+    calendarStyle = new CalendarStyle(themedContext, dateSelector.getAccentColor());
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
     Month earliestMonth = calendarConstraints.getStart();
@@ -388,7 +391,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
     setSelector(CalendarSelector.DAY);
-    monthDropSelect.setText(current.getLongName());
+    monthDropSelect.setText(current.getLongName(root.getContext()));
     recyclerView.addOnScrollListener(
         new OnScrollListener() {
           @Override
@@ -444,6 +447,13 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             }
           }
         });
+
+    if (dateSelector.getAccentColor() != AccentColor.NONE) {
+      monthDropSelect.setTextColor(dateSelector.getAccentColor());
+      monthDropSelect.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+      monthPrev.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+      monthNext.setIconTint(ColorStateList.valueOf(dateSelector.getAccentColor()));
+    }
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {

@@ -20,17 +20,22 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.ColorInt;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
+
+import com.google.android.material.color.AccentColor;
+import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -56,11 +61,13 @@ final class CalendarItemStyle {
   private final ColorStateList strokeColor;
   private final int strokeWidth;
   private final ShapeAppearanceModel itemShape;
+  private final int selectedColor;
 
   private CalendarItemStyle(
       ColorStateList backgroundColor,
       ColorStateList textColor,
       ColorStateList strokeColor,
+      @ColorInt int selectedColor,
       int strokeWidth,
       ShapeAppearanceModel itemShape,
       @NonNull Rect insets) {
@@ -73,6 +80,7 @@ final class CalendarItemStyle {
     this.textColor = textColor;
     this.backgroundColor = backgroundColor;
     this.strokeColor = strokeColor;
+    this.selectedColor = selectedColor;
     this.strokeWidth = strokeWidth;
     this.itemShape = itemShape;
   }
@@ -83,7 +91,7 @@ final class CalendarItemStyle {
    */
   @NonNull
   static CalendarItemStyle create(
-      @NonNull Context context, @StyleRes int materialCalendarItemStyle) {
+      @NonNull Context context, @StyleRes int materialCalendarItemStyle, @ColorInt int selectedColor) {
     Preconditions.checkArgument(
         materialCalendarItemStyle != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
 
@@ -128,7 +136,7 @@ final class CalendarItemStyle {
     styleableArray.recycle();
 
     return new CalendarItemStyle(
-        backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
+        backgroundColor, textColor, strokeColor, selectedColor, strokeWidth, itemShape, insets);
   }
 
   /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
@@ -137,9 +145,15 @@ final class CalendarItemStyle {
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    backgroundDrawable.setFillColor(backgroundColor);
+    if (selectedColor != AccentColor.NONE) {
+      int textColor = ColorLuminance.isDark(selectedColor) ? Color.WHITE : Color.BLACK;
+      item.setTextColor(textColor);
+      backgroundDrawable.setFillColor(ColorStateList.valueOf(selectedColor));
+    } else {
+      item.setTextColor(textColor);
+      backgroundDrawable.setFillColor(backgroundColor);
+    }
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
-    item.setTextColor(textColor);
     Drawable d;
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);

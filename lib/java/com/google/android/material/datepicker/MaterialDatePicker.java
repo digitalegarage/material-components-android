@@ -26,11 +26,14 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import androidx.annotation.ColorInt;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.core.util.Pair;
@@ -50,6 +53,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+
+import com.google.android.material.color.AccentColor;
+import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
@@ -67,6 +73,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
   private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
   private static final String INPUT_MODE_KEY = "INPUT_MODE_KEY";
+  private static final String ACCENT_COLOR_KEY = "ACCENT_COLOR_KEY";
 
   static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
@@ -123,6 +130,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private CharSequence titleText;
   private boolean fullscreen;
   @InputMode private int inputMode;
+  private int accentColor;
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
@@ -139,6 +147,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
     args.putCharSequence(TITLE_TEXT_KEY, options.titleText);
     args.putInt(INPUT_MODE_KEY, options.inputMode);
+    args.putInt(ACCENT_COLOR_KEY, options.accentColor);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
   }
@@ -148,6 +157,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(DATE_SELECTOR_KEY, dateSelector);
+    bundle.putInt(ACCENT_COLOR_KEY, accentColor);
 
     CalendarConstraints.Builder constraintsBuilder =
         new CalendarConstraints.Builder(calendarConstraints);
@@ -169,6 +179,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
     titleText = activeBundle.getCharSequence(TITLE_TEXT_KEY);
     inputMode = activeBundle.getInt(INPUT_MODE_KEY);
+    accentColor = activeBundle.getInt(ACCENT_COLOR_KEY);
   }
 
   private int getThemeResId(Context context) {
@@ -241,7 +252,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
     confirmButton.setOnClickListener(
-        new View.OnClickListener() {
+        new OnClickListener() {
           @Override
           public void onClick(View v) {
             for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
@@ -255,15 +266,27 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
     cancelButton.setOnClickListener(
-        new View.OnClickListener() {
+        new OnClickListener() {
           @Override
           public void onClick(View v) {
-            for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+            for (OnClickListener listener : onNegativeButtonClickListeners) {
               listener.onClick(v);
             }
             dismiss();
           }
         });
+
+    if (accentColor != AccentColor.NONE) {
+      root.findViewById(R.id.mtrl_picker_header).setBackgroundColor(accentColor);
+      confirmButton.setTextColor(accentColor);
+      cancelButton.setTextColor(accentColor);
+      int textColor = ColorLuminance.isDark(accentColor) ? Color.WHITE : Color.BLACK;
+      titleTextView.setTextColor(textColor);
+      headerSelectionText.setTextColor(textColor);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        headerToggleButton.setImageTintList(ColorStateList.valueOf(textColor));
+      }
+    }
     return root;
   }
 
@@ -533,6 +556,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     CharSequence titleText = null;
     @Nullable S selection = null;
     @InputMode int inputMode = INPUT_MODE_CALENDAR;
+    int accentColor = AccentColor.NONE;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -616,6 +640,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       return this;
     }
 
+    @NonNull
+    public Builder<S> setAccentColor(@ColorInt int color) {
+      this.accentColor = color;
+      return this;
+    }
+
     /** Creates a {@link MaterialDatePicker} with the provided options. */
     @NonNull
     public MaterialDatePicker<S> build() {
@@ -632,6 +662,9 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
       if (calendarConstraints.getOpenAt() == null) {
         calendarConstraints.setOpenAt(createDefaultOpenAt());
+      }
+      if (accentColor != AccentColor.NONE) {
+        dateSelector.setAccentColor(accentColor);
       }
 
       return MaterialDatePicker.newInstance(this);

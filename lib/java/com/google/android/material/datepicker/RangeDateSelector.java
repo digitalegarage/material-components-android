@@ -34,6 +34,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
@@ -58,6 +60,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @Nullable private Long selectedEndItem = null;
   @Nullable private Long proposedTextStart = null;
   @Nullable private Long proposedTextEnd = null;
+  private int accentColor = AccentColor.NONE;
 
   @Override
   public void select(long selection) {
@@ -305,5 +308,15 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeValue(selectedStartItem);
     dest.writeValue(selectedEndItem);
+  }
+
+  @Override
+  public int getAccentColor() {
+    return accentColor;
+  }
+
+  @Override
+  public void setAccentColor(int color) {
+    this.accentColor = color;
   }
 }

@@ -18,7 +18,6 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -30,6 +29,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import androidx.annotation.ColorInt;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -152,6 +152,12 @@ class ClockHandView extends View {
     });
 
     rotationAnimator.start();
+  }
+
+  void setAccentColor(@ColorInt int color) {
+    if (color != 0) {
+      paint.setColor(color);
+    }
   }
 
   private Pair<Float, Float> getValuesForAnimation(float degrees) {

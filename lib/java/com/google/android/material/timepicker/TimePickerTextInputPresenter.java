@@ -25,8 +25,8 @@ import static java.util.Calendar.AM;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.PM;
-
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -43,8 +43,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.color.AccentColor;
+import com.google.android.material.color.ColorStateListCreator;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
@@ -103,7 +107,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     hourTextInput = timePickerView.findViewById(R.id.material_hour_text_input);
     TextView minuteLabel = minuteTextInput.findViewById(R.id.material_label);
     TextView hourLabel = hourTextInput.findViewById(R.id.material_label);
-
     minuteLabel.setText(res.getString(R.string.material_timepicker_minute));
     hourLabel.setText(res.getString(R.string.material_timepicker_hour));
     minuteTextInput.setTag(R.id.selection_type, MINUTE);
@@ -111,6 +114,11 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
 
     if (time.format == CLOCK_12H) {
       setupPeriodToggle();
+    }
+
+    if (time.getAccentColor() != AccentColor.NONE) {
+      hourTextInput.setAccentColor(time.getAccentColor());
+      minuteTextInput.setAccentColor(time.getAccentColor());
     }
 
     OnClickListener onClickListener =
@@ -187,7 +195,22 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
           }
         });
     toggle.setVisibility(View.VISIBLE);
+    if (time.getAccentColor() != AccentColor.NONE) {
+      MaterialButton amButton = toggle.findViewById(R.id.material_clock_period_am_button);
+      MaterialButton pmButton = toggle.findViewById(R.id.material_clock_period_pm_button);
+      applyStyleForMaterialButton(amButton, time.getAccentColor());
+      applyStyleForMaterialButton(pmButton, time.getAccentColor());
+    }
     updateSelection();
+  }
+
+  private void applyStyleForMaterialButton(MaterialButton button, @ColorInt int color) {
+    int defaultTextColor = button.getTextColors().getDefaultColor();
+    int defaultBackground = button.getBackgroundTintList().getDefaultColor();
+    ColorStateList textColor = ColorStateListCreator.create(color, defaultTextColor);
+    ColorStateList background = ColorStateListCreator.create(ColorUtils.setAlphaComponent(color, 50), defaultBackground);
+    button.setTextColor(textColor);
+    button.setBackgroundTintList(background);
   }
 
   private void updateSelection() {

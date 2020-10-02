@@ -22,11 +22,13 @@ import static java.util.Calendar.AM;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.PM;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -39,9 +41,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.color.ColorStateListCreator;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 import java.util.Locale;
@@ -154,6 +158,24 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView.setOnTouchListener(onTouchListener);
   }
 
+  private void applyStyleForChip(Chip chip, @ColorInt int color) {
+    int defaultTextColor = chip.getTextColors().getColorForState(new int[]{android.R.attr.state_enabled}, chip.getTextColors().getDefaultColor());
+    int defaultBackground = chip.getChipBackgroundColor().getDefaultColor();
+    ColorStateList textColor = ColorStateListCreator.create(color, defaultTextColor);
+    ColorStateList background = ColorStateListCreator.create(ColorUtils.setAlphaComponent(color, 50), defaultBackground);
+    chip.setTextColor(textColor);
+    chip.setChipBackgroundColor(background);
+  }
+
+  private void applyStyleForMaterialButton(MaterialButton button, @ColorInt int color) {
+    int defaultTextColor = button.getTextColors().getDefaultColor();
+    int defaultBackground = button.getBackgroundTintList().getDefaultColor();
+    ColorStateList textColor = ColorStateListCreator.create(color, defaultTextColor);
+    ColorStateList background = ColorStateListCreator.create(ColorUtils.setAlphaComponent(color, 50), defaultBackground);
+    button.setTextColor(textColor);
+    button.setBackgroundTintList(background);
+  }
+
   public void setMinuteHourDelegate(AccessibilityDelegateCompat clickActionDelegate) {
     ViewCompat.setAccessibilityDelegate(hourView, clickActionDelegate);
   }
@@ -227,6 +249,16 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
 
   void setOnDoubleTapListener(@Nullable OnDoubleTapListener listener) {
     this.onDoubleTapListener = listener;
+  }
+
+  void setAccentColor(@ColorInt int color) {
+    applyStyleForChip(hourView, color);
+    applyStyleForChip(minuteView, color);
+    MaterialButton amButton = toggle.findViewById(R.id.material_clock_period_am_button);
+    MaterialButton pmButton = toggle.findViewById(R.id.material_clock_period_pm_button);
+    applyStyleForMaterialButton(amButton, color);
+    applyStyleForMaterialButton(pmButton, color);
+    clockFace.setAccentColor(color);
   }
 
   public void showToggle() {

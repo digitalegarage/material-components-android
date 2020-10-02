@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -32,6 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+
+import com.google.android.material.color.AccentColor;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
@@ -49,6 +52,8 @@ import java.util.Collection;
 public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;
+
+  private int accentColor = AccentColor.NONE;
 
   @Override
   public void select(long selection) {
@@ -112,6 +117,11 @@ public class SingleDateSelector implements DateSelector<Long> {
     dateTextInput.setPlaceholderText(formatHint);
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
+    }
+
+    if (accentColor != AccentColor.NONE) {
+      dateTextInput.setBoxStrokeColor(accentColor);
+      dateTextInput.setHintTextColor(ColorStateList.valueOf(accentColor));
     }
 
     dateEditText.addTextChangedListener(
@@ -188,5 +198,15 @@ public class SingleDateSelector implements DateSelector<Long> {
   @Override
   public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeValue(selectedItem);
+  }
+
+  @Override
+  public int getAccentColor() {
+    return accentColor;
+  }
+
+  @Override
+  public void setAccentColor(int color) {
+    this.accentColor = color;
   }
 }

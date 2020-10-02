@@ -49,6 +49,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import com.google.android.material.color.ColorLuminance;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 
@@ -69,7 +70,7 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   private final SparseArray<TextView> textViewPool = new SparseArray<>();
   private final AccessibilityDelegateCompat valueAccessibilityDelegate;
 
-  private final int[] gradientColors;
+  private int[] gradientColors;
   private final float[] gradientPositions = new float[] {0f, 0.9f, 1f};
   private final int clockHandPadding;
 
@@ -202,6 +203,13 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
       super.setRadius(radius);
       clockHandView.setCircleRadius(getRadius());
     }
+  }
+
+  public void setAccentColor(@ColorInt int color) {
+    clockHandView.setAccentColor(color);
+    int selectedTextColor = ColorLuminance.isDark(color) ? Color.WHITE : Color.BLACK;
+    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+    gradientColors = new int[] {selectedTextColor, selectedTextColor, colorOnSurface};
   }
 
   @Override
