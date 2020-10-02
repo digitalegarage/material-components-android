@@ -25,6 +25,7 @@ import static java.util.Calendar.PM;
 import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
 import com.google.android.material.timepicker.TimePickerControls.ClockPeriod;
@@ -47,6 +48,7 @@ class TimeModel implements Parcelable {
   @ActiveSelection int selection;
   @ClockPeriod int period;
 
+  private int accentColor = 0;
 
   public TimeModel() {
     this(CLOCK_12H);
@@ -177,6 +179,14 @@ class TimeModel implements Parcelable {
         hour -= 12;
       }
     }
+  }
+
+  public int getAccentColor() {
+    return accentColor;
+  }
+
+  public void setAccentColor(@ColorInt int accentColor) {
+    this.accentColor = accentColor;
   }
 
   public static String formatText(Resources resources, CharSequence text) {
